@@ -11,6 +11,7 @@ Exercises
 """
 
 from random import choice
+from math import sqrt
 from turtle import *
 from freegames import floor, vector
 
@@ -47,6 +48,8 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
+
+
 
 def square(x, y):
     "Draw square using path at (x, y)."
@@ -100,6 +103,40 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
+
+
+def distancia(elem1,elem2):
+    return abs(sqrt((elem1[0]-elem2[0])**2+((elem1[1]-elem2[1])**2)))
+
+def mejorOpcion():
+    fantasmin=(point[0],point[1])
+    pacmancito=(pacman[0],pacman[1])
+    #numerito=distancia(fantasmin,pacmancito)
+    opc1=(point[0]+10,point[1])
+    dist1=distancia(pacmancito,opc1)
+
+    opc2=(point[0]-10,point[1])
+    dist2=distancia(pacmancito,opc2)
+            
+    opc3=(point[0],point[1]+10)
+    dist3=distancia(pacmancito,opc3)
+
+    opc4=(point[0],point[1]-10)
+    dist4=distancia(pacmancito,opc4)
+            
+    posiblesOpciones=[dist1,dist2,dist3,dist4]
+    minimo=min(posiblesOpciones)
+
+    if minimo == dist1:
+        eleccion=vector(10, 0)
+    if minimo == dist2:
+        eleccion=vector(-10, 0)
+    if minimo == dist3:
+        eleccion=vector(0 ,10)
+    if minimo == dist4:
+        eleccion=vector(0, -10)
+    return eleccion
+
 def move():
     "Move pacman and all ghosts."
     writer.undo()
@@ -124,6 +161,36 @@ def move():
     dot(20, 'yellow')
 
     for point, course in ghosts:
+        
+        fantasmin=(point[0],point[1])
+        pacmancito=(pacman[0],pacman[1])
+        #numerito=distancia(fantasmin,pacmancito)
+        opc1=(point[0]+10,point[1])
+        dist1=distancia(pacmancito,opc1)
+
+        opc2=(point[0]-10,point[1])
+        dist2=distancia(pacmancito,opc2)
+            
+        opc3=(point[0],point[1]+10)
+        dist3=distancia(pacmancito,opc3)
+
+        opc4=(point[0],point[1]-10)
+        dist4=distancia(pacmancito,opc4)
+            
+        posiblesOpciones=[dist1,dist2,dist3,dist4]
+        minimo=min(posiblesOpciones)
+
+        if minimo == dist1:
+            eleccion=vector(10, 0)
+        if minimo == dist2:
+            eleccion=vector(-10, 0)
+        if minimo == dist3:
+            eleccion=vector(0 ,10)
+        if minimo == dist4:
+            eleccion=vector(0, -10)
+        
+
+
         if valid(point + course):
             point.move(course)
         else:
@@ -132,10 +199,14 @@ def move():
                 vector(-10, 0),
                 vector(0, 10),
                 vector(0, -10),
+                eleccion,
+                eleccion,
+                eleccion,
             ]
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
+           
 
         up()
         goto(point.x + 10, point.y + 10)
